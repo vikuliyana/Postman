@@ -1,0 +1,415 @@
+{
+	"info": {
+		"_postman_id": "3a732329-7543-4d34-93b3-7232a04b1791",
+		"name": "HW_3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19941630"
+	},
+	"item": [
+		{
+			"name": "N1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var respData = pm.response.json();\r",
+							"var respToken = respData.token;\r",
+							"pm.environment.set(\"token\", respToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "vika123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "simple123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "N2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var reqData = JSON.parse(pm.request.body.raw);\r",
+							"var reqSalary = reqData.salary;\r",
+							"\r",
+							"var respData = pm.response.json();\r",
+							"var respSalary_after_1_5_year = respData.person.u_salary_1_5_year;\r",
+							"var respSalary_after_6_months = respData.qa_salary_after_6_months;\r",
+							"var respSalary_after_12_months = respData.qa_salary_after_12_months;\r",
+							"\r",
+							"pm.test(\"Check parameter qa_salary_after_1.5_year\", function () {\r",
+							"    pm.expect(respSalary_after_1_5_year).to.eql(reqSalary*4);\r",
+							"});\r",
+							"pm.test(\"Check parameter qa_salary_after_6_months\", function () {\r",
+							"    pm.expect(respSalary_after_6_months).to.eql(reqSalary*2);\r",
+							"});\r",
+							"pm.test(\"Check parameter qa_salary_after_12_months\", function () {\r",
+							"    pm.expect(respSalary_after_12_months).to.eql(reqSalary*2.9);\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"salary\", respSalary_after_1_5_year);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"age\": \"{{age}}\",\r\n    \"salary\": \"{{salary}}\",\r\n    \"auth_token\": \"{{token}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/user_info",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "N3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var respData = pm.response.json();\r",
+							"var respSalaryFirstElement = respData.salary[0];\r",
+							"var respSalarySecondElement = respData.salary[1];\r",
+							"var respSalaryThirdElement = respData.salary[2];\r",
+							"\r",
+							"var reqData = request.data;\r",
+							"\r",
+							"pm.test(\"Check response to have property Age\", function () {\r",
+							"    pm.expect(respData).to.have.property(\"age\");\r",
+							"});\r",
+							"pm.test(\"Check response to have property Name\", function () {\r",
+							"    pm.expect(respData).to.have.property(\"name\");\r",
+							"});\r",
+							"pm.test(\"Check response to have property Salary\", function () {\r",
+							"    pm.expect(respData).to.have.property(\"salary\");\r",
+							"});\r",
+							"pm.test(\"Check parameter respSalaryThirdElement > respSalaryFirstElement and respSalarySecondElement\", function () {\r",
+							"    pm.expect(respSalaryThirdElement > respSalaryFirstElement && respSalaryThirdElement > respSalarySecondElement);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "{{age}}",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "{{salary}}",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "{{name}}",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/new_data",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"new_data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "N4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var respData = pm.response.json();\r",
+							"var respDailyFood = respData.daily_food;\r",
+							"var respDailySleep = respData.daily_sleep;\r",
+							"\r",
+							"var reqData = request.data;\r",
+							"var reqWeight = reqData.weight;\r",
+							"\r",
+							"pm.test(\"Check age property\", function () {\r",
+							"    pm.expect(respData).to.have.property(\"age\");\r",
+							"});\r",
+							"pm.test(\"Check name property\", function () {\r",
+							"    pm.expect(respData).to.have.property(\"age\");\r",
+							"});\r",
+							"pm.test(\"Ckeck daily_sleep property\", function () {\r",
+							"    pm.expect(respData).to.have.property(\"daily_sleep\");\r",
+							"});\r",
+							"pm.test(\"Ckeck daily_food property\", function () {\r",
+							"    pm.expect(respData).to.have.property(\"daily_food\");\r",
+							"});\r",
+							"pm.test(\"Check daily_sleep value\", function () {\r",
+							"    pm.expect(respDailySleep).to.eql(reqWeight*2.5);\r",
+							"});\r",
+							"pm.test(\"Check daily_food value\", function () {\r",
+							"    pm.expect(respDailyFood).to.eql(reqWeight*0.012);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Sonya",
+							"type": "text"
+						},
+						{
+							"key": "weight",
+							"value": "7",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/test_pet_info",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"test_pet_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "N5",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var respData = pm.response.json();\r",
+							"var respName = respData.name;\r",
+							"var respAge = respData.age;\r",
+							"\r",
+							"var reqData = request.data;\r",
+							"var reqAge = reqData.age;\r",
+							"\r",
+							"pm.test(\"Check parameter name\", function () {\r",
+							"    pm.expect(respName).to.eql(pm.environment.get('name'));\r",
+							"});\r",
+							"pm.test(\"Check parameter age\", function () {\r",
+							"    pm.expect(respAge).to.eql(reqAge);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "{{name}}",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "{{age}}",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "{{salary}}",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/get_test_user",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"get_test_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "N6",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/currency",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"currency"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "N7",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						},
+						{
+							"key": "curr_code",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/curr_byn",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"curr_byn"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://162.55.220.72:5005",
+			"type": "string"
+		}
+	]
+}
